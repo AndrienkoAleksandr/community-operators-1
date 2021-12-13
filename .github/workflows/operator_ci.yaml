@@ -2,8 +2,13 @@
 name: Operator CI
 
 on:
- pull_request_target:
-   types: [opened, synchronize, reopened, ready_for_review, unlabeled]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason to trigger a build'
+        required: false
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, unlabeled]
 
 env:
   AUTOMERGE_ENABLED: "1"
