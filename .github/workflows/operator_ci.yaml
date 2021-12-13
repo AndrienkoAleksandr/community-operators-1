@@ -19,7 +19,7 @@ env:
   OPP_ANSIBLE_PULL_BRANCH: "upstream-community"
   OPP_REVIEWERS_ENABLED: 1
 
-  
+   
 jobs:
   # operator-automerge-enabled:
   #   runs-on: ubuntu-latest
