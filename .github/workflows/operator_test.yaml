@@ -134,13 +134,16 @@ jobs:
         run: |
           ls /tmp/operator-test/operators
           head /tmp/operator-test/op_info.yaml
+
+
       - name: Operator test
         env:
           OPP_LABELS: "${{ join(github.event.pull_request.labels.*.name, ' ') }}"
           OPP_AUTO_PACKAGEMANIFEST_CLUSTER_VERSION_LABEL: "${{ needs.pr-check.outputs.opp_auto_packagemanifest_cluster_version_label }}"
+        
         run: |
           echo "kiwi operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
-          bash <(curl -sL $OPP_SCRIPT_URL) kiwi "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
+          opp.sh kiwi "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
       - name: Search operator test error olm.maxOpenShiftVersion error 
         id: op-kiwi-test-err-maxOpenShiftVersion
         if: always()
@@ -175,63 +178,63 @@ jobs:
           allow-repeats: true
 
 
-  test-lemon:
-    name: "lemon / Deploy from scratch"
-    needs: pr-check
-    if: needs.pr-check.outputs.opp_test_ready == '1'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Operator test
-        env:
-          OPP_LABELS: "${{ join(github.event.pull_request.labels.*.name, ' ') }}"
-          OPP_AUTO_PACKAGEMANIFEST_CLUSTER_VERSION_LABEL: "${{ needs.pr-check.outputs.opp_auto_packagemanifest_cluster_version_label }}"
-        run: |
-          echo "lemon operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
-          bash <(curl -sL $OPP_SCRIPT_URL) lemon "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
+  # test-lemon:
+  #   name: "lemon / Deploy from scratch"
+  #   needs: pr-check
+  #   if: needs.pr-check.outputs.opp_test_ready == '1'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #       with:
+  #         ref: ${{ github.event.pull_request.head.sha }}
+  #     - name: Operator test
+  #       env:
+  #         OPP_LABELS: "${{ join(github.event.pull_request.labels.*.name, ' ') }}"
+  #         OPP_AUTO_PACKAGEMANIFEST_CLUSTER_VERSION_LABEL: "${{ needs.pr-check.outputs.opp_auto_packagemanifest_cluster_version_label }}"
+  #       run: |
+  #         echo "lemon operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
+  #         bash <(curl -sL $OPP_SCRIPT_URL) lemon "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
 
 
 
-  test-orange-latest:
-    name: "orange / Deploy k8s latest"
-    needs: pr-check
-    if: needs.pr-check.outputs.opp_test_ready == '1' && needs.pr-check.outputs.opp_op_delete == '0'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Operator test
-        env:
-          OPP_LABELS: "${{ join(github.event.pull_request.labels.*.name, ' ') }}"
-          OPP_AUTO_PACKAGEMANIFEST_CLUSTER_VERSION_LABEL: "${{ needs.pr-check.outputs.opp_auto_packagemanifest_cluster_version_label }}"
-        run: |
-          echo "orange operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
-          bash <(curl -sL $OPP_SCRIPT_URL) orange "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
+  # test-orange-latest:
+  #   name: "orange / Deploy k8s latest"
+  #   needs: pr-check
+  #   if: needs.pr-check.outputs.opp_test_ready == '1' && needs.pr-check.outputs.opp_op_delete == '0'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #       with:
+  #         ref: ${{ github.event.pull_request.head.sha }}
+  #     - name: Operator test
+  #       env:
+  #         OPP_LABELS: "${{ join(github.event.pull_request.labels.*.name, ' ') }}"
+  #         OPP_AUTO_PACKAGEMANIFEST_CLUSTER_VERSION_LABEL: "${{ needs.pr-check.outputs.opp_auto_packagemanifest_cluster_version_label }}"
+  #       run: |
+  #         echo "orange operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
+  #         bash <(curl -sL $OPP_SCRIPT_URL) orange "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
 
 
-  test-summary:
-    name: "Summary"
+  # test-summary:
+  #   name: "Summary"
     
-    needs: [ pr-check, test-kiwi, test-lemon, test-orange-latest]
+  #   needs: [ pr-check, test-kiwi, test-lemon, test-orange-latest]
 
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: PR
-        if: needs.pr-check.outputs.opp_test_ready == '1'
-        continue-on-error: true
-        run: |
-          echo "OP_PR=${{ github.event.pull_request.number }}"
-      - name: Save PR number
-        run: |
-          mkdir -p ./pr
-          echo ${{ github.event.number }} > ./pr/NR
-      - uses: actions/upload-artifact@v2
-        with:
-          name: pr
-          path: pr/
+  #   if: always()
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: PR
+  #       if: needs.pr-check.outputs.opp_test_ready == '1'
+  #       continue-on-error: true
+  #       run: |
+  #         echo "OP_PR=${{ github.event.pull_request.number }}"
+  #     - name: Save PR number
+  #       run: |
+  #         mkdir -p ./pr
+  #         echo ${{ github.event.number }} > ./pr/NR
+  #     - uses: actions/upload-artifact@v2
+  #       with:
+  #         name: pr
+  #         path: pr/
