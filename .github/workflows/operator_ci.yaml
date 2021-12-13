@@ -109,8 +109,8 @@ jobs:
           OPP_OPRT_SRC_BRANCH: "${{ github.event.pull_request.base.ref }}"
           OPP_THIS_PR: ${{ github.event.pull_request.number }}
         run: |
-          bash <(curl -sL $OPP_SCRIPT_ENV_OPRT_URL)
-          echo "Test."
+          bash <(curl -sL $OPP_SCRIPT_ENV_OPRT_URL) || true
+          echo "Test200."
 
 #       - name: "Remove installation-validated"
 #         uses: actions/github-script@v4
