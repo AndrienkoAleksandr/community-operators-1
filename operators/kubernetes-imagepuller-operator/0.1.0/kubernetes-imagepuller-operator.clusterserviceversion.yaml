@@ -19,7 +19,7 @@ metadata:
     capabilities: Seamless Upgrades
     categories: Developer Tools
     certified: "false"
-    containerImage: quay.io/eclipse/kubernetes-image-puller-operator:next
+    containerImage: quay.io/eclipse/kubernetes-image-puller-operator:0.0.1
     createdAt: ""
     description: Create and manage kubernetes-image-puller instances.
     operators.operatorframework.io/builder: operator-sdk-v1.6.1+git
@@ -101,7 +101,7 @@ spec:
                       fieldPath: metadata.name
                 - name: OPERATOR_NAME
                   value: kubernetes-image-puller-operator
-                image: quay.io/aandriienko/kubernetes-image-puller-operator:next
+                image: quay.io/eclipse/kubernetes-image-puller-operator:0.0.1
                 imagePullPolicy: Always
                 livenessProbe:
                   httpGet:
