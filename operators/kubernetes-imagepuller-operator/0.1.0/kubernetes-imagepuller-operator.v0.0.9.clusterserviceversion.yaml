@@ -185,6 +185,8 @@ spec:
                       - kubernetes-image-puller-operator
                     imagePullPolicy: Always
                     env:
+                      - name: Test
+                        value: Test
                       - name: WATCH_NAMESPACE
                         valueFrom:
                           fieldRef:
