@@ -80,7 +80,7 @@ jobs:
           # OPP_ANSIBLE_PULL_BRANCH="upstream-community-dev"
           [ "$OPP_AUTO_LABEL" = '1' ] && ANSIBLE_ARGS="-e automatic_cluster_version_label=true" || ANSIBLE_ARGS="-e automatic_cluster_version_label=false"
 
-          echo "====================== TEST 6"
+          echo "====================== TEST 6 $OPP_ANSIBLE_PULL_REPO $OPP_ANSIBLE_PULL_BRANCH"
           ansible-pull -U $OPP_ANSIBLE_PULL_REPO -C $OPP_ANSIBLE_PULL_BRANCH -i localhost, -e run_upstream=true -e run_prepare_catalog_repo_upstream=false -e run_remove_catalog_repo=false upstream/local.yml --tags reset_tools,operator_info -e operator_dir=$PWD/operators/operators/${{ steps.op-traffic-light.outputs.opp_name }} -e cluster_type=$OPP_PRODUCTION_TYPE -e strict_cluster_version_labels=true -e production_registry_namespace=$OPP_RELEASE_BUNDLE_REGISTRY/$OPP_RELEASE_BUNDLE_ORGANIZATION $ANSIBLE_ARGS
 
 
@@ -139,6 +139,7 @@ jobs:
           OPP_LABELS: "${{ join(github.event.pull_request.labels.*.name, ' ') }}"
           OPP_AUTO_PACKAGEMANIFEST_CLUSTER_VERSION_LABEL: "${{ needs.pr-check.outputs.opp_auto_packagemanifest_cluster_version_label }}"
         run: |
+          
           echo "kiwi operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
           bash <(curl -sL $OPP_SCRIPT_URL) kiwi "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
       - name: Search operator test error olm.maxOpenShiftVersion error 
