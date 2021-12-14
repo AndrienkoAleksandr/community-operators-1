@@ -11,7 +11,7 @@ on:
 env:
   OPP_DEBUG: 1
   OPP_CONTAINER_OPT: "-t"
-  OPP_SCRIPT_URL: "https://gist.githubusercontent.com/AndrienkoAleksandr/e3e97322731517b0a41b4ef5266ea1ea/raw/68ab7172a8205546f826a32c9de5fc148f5625fa/opp.sh"
+  OPP_SCRIPT_URL: "https://raw.githubusercontent.com/AndrienkoAleksandr/community-operators-pipeline/ci/latest/ci/scripts/opp.sh"
   OPP_SCRIPT_ENV_URL: "https://raw.githubusercontent.com/redhat-openshift-ecosystem/community-operators-pipeline/ci/latest/ci/scripts/opp-env.sh"
   OPP_SCRIPT_ENV_OPRT_URL: "https://raw.githubusercontent.com/redhat-openshift-ecosystem/community-operators-pipeline/ci/latest/ci/scripts/opp-oprt.sh"
   OPP_IMAGE: "quay.io/operator_testing/operator-test-playbooks:latest"
