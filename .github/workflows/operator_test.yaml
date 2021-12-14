@@ -143,7 +143,7 @@ jobs:
         
         run: |
           echo "kiwi operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
-          opp.sh kiwi "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
+          bash <(curl -sL $OPP_SCRIPT_URL) kiwi "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
       - name: Search operator test error olm.maxOpenShiftVersion error 
         id: op-kiwi-test-err-maxOpenShiftVersion
         if: always()
