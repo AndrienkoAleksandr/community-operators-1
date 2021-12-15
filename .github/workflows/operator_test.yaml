@@ -142,6 +142,9 @@ jobs:
           OPP_AUTO_PACKAGEMANIFEST_CLUSTER_VERSION_LABEL: "${{ needs.pr-check.outputs.opp_auto_packagemanifest_cluster_version_label }}"
         
         run: |
+          echo "----------"
+          pwd
+          echo "----------"
           echo "$OPP_ANSIBLE_PULL_REPO and branch: OPP_ANSIBLE_PULL_BRANCH"
           echo "kiwi operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
           bash <(curl -sL $OPP_SCRIPT_URL) kiwi "operators/${{ needs.pr-check.outputs.opp_name }}/${{ needs.pr-check.outputs.opp_version }}"
